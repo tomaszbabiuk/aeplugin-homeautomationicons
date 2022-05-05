@@ -1,0 +1,3 @@
+rootProject.name = 'aeplugin-homeautomationicons'
+
+includeBuild "../automate-everything"
