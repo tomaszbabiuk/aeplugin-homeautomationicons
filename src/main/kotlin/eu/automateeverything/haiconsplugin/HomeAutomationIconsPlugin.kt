@@ -15,108 +15,106 @@
 
 package eu.automateeverything.haiconsplugin
 
-import eu.automateeverything.data.Repository
+import eu.automateeverything.data.DataRepository
 import eu.automateeverything.data.icons.IconCategoryDto
 import eu.automateeverything.data.icons.IconDto
 import eu.automateeverything.data.localization.Resource
 import eu.automateeverything.data.plugins.PluginCategory
 import eu.automateeverything.domain.extensibility.PluginMetadata
+import java.util.*
 import org.pf4j.Plugin
 import org.pf4j.PluginWrapper
-import java.util.*
-
 
 class HomeAutomationIconsPlugin(
     wrapper: PluginWrapper,
-    private val repository: Repository
+    private val dataRepository: DataRepository
 ) : Plugin(wrapper), PluginMetadata {
 
-    val icons = listOf(
-        "attic",
-        "averagingthermometer",
-        "bell",
-        "blinds",
-        "boiler",
-        "brightness",
-        "bullhorn",
-        "button",
-        "clock",
-        "comfortmeter",
-        "coordination",
-        "curtain",
-        "desklamp",
-        "door",
-        "dust",
-        "equalizer",
-        "fan",
-        "faucet",
-        "garage",
-        "garagedoor",
-        "gate",
-        "gauge",
-        "hanginglamp",
-        "heat",
-        "house",
-        "hygrometer",
-        "impeller",
-        "key",
-        "keyboard",
-        "leaf",
-        "led",
-        "lightbulb",
-        "lightswitch",
-        "lock",
-        "luminosity",
-        "magneticdetector",
-        "meter",
-        "microchip",
-        "monitoring",
-        "moon",
-        "plant",
-        "plugin",
-        "power",
-        "radiator",
-        "remotecontroller",
-        "rgblamp",
-        "rtl",
-        "running",
-        "shield",
-        "smartphone",
-        "smokedetector",
-        "snowflake",
-        "speaker",
-        "standinglamp",
-        "sun",
-        "switch",
-        "thermometer",
-        "thermostat",
-        "tv",
-        "valve",
-        "washingmachine",
-        "watertreatmentplant",
-        "weatherizedhome",
-    )
+    val icons =
+        listOf(
+            "attic",
+            "averagingthermometer",
+            "bell",
+            "blinds",
+            "boiler",
+            "brightness",
+            "bullhorn",
+            "button",
+            "clock",
+            "comfortmeter",
+            "coordination",
+            "curtain",
+            "desklamp",
+            "door",
+            "dust",
+            "equalizer",
+            "fan",
+            "faucet",
+            "garage",
+            "garagedoor",
+            "gate",
+            "gauge",
+            "hanginglamp",
+            "heat",
+            "house",
+            "hygrometer",
+            "impeller",
+            "key",
+            "keyboard",
+            "leaf",
+            "led",
+            "lightbulb",
+            "lightswitch",
+            "lock",
+            "luminosity",
+            "magneticdetector",
+            "meter",
+            "microchip",
+            "monitoring",
+            "moon",
+            "plant",
+            "plugin",
+            "power",
+            "radiator",
+            "remotecontroller",
+            "rgblamp",
+            "rtl",
+            "running",
+            "shield",
+            "smartphone",
+            "smokedetector",
+            "snowflake",
+            "speaker",
+            "standinglamp",
+            "sun",
+            "switch",
+            "thermometer",
+            "thermostat",
+            "tv",
+            "valve",
+            "washingmachine",
+            "watertreatmentplant",
+            "weatherizedhome",
+        )
 
     override fun start() {
-        val allIcons = repository.getAllIcons()
+        val allIcons = dataRepository.getAllIcons()
 
         val isInstalled = allIcons.filter { it.owner == ICON_OWNER }
 
         if (isInstalled.isEmpty()) {
-            val categoryId = repository.saveIconCategory(
-                IconCategoryDto(0, R.plugin_name, true, listOf())
-            )
+            val categoryId =
+                dataRepository.saveIconCategory(IconCategoryDto(0, R.plugin_name, true, listOf()))
 
             icons.forEach {
                 val svg = loadTextFromResources("$it.svg")
                 val iconDto = IconDto(0, categoryId, ICON_OWNER, svg!!)
-                repository.saveIcon(iconDto)
+                dataRepository.saveIcon(iconDto)
             }
         }
     }
 
-    override fun stop() {
-    }
+    override fun stop() {}
 
     override val name: Resource = R.plugin_name
     override val description: Resource = R.plugin_description
